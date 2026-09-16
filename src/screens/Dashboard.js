@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { auth, database } from '../config/firebase';
+import { auth, db } from '../FirebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import TextInputField from '../components/TextInputField';
@@ -20,7 +20,7 @@ const Dashboard = ({ navigation }) => {
       
       // Obtener datos del usuario desde Cloud Firestore
       try {
-        const docRef = doc(database, 'usuarios', user.uid);
+        const docRef = doc(db, 'usuarios', user.uid);
         const snap = await getDoc(docRef);
         
         if (snap.exists()) {
@@ -43,7 +43,7 @@ const Dashboard = ({ navigation }) => {
   const handleSave = async () => {
     try {
       if (!auth.currentUser) return;
-      const docRef = doc(database, 'usuarios', auth.currentUser.uid);
+      const docRef = doc(db, 'usuarios', auth.currentUser.uid);
       
       // Actualizar en Firestore
       await updateDoc(docRef, form);
