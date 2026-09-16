@@ -1,9 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { initializeAuth } from 'firebase/auth';
-import { initializeFirestore } from 'firebase/firestore';
-import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID, test} from '@env';
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import { initializeFirestore, memoryLocalCache } from 'firebase/firestore';
+import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID } from '@env';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
@@ -13,7 +12,14 @@ const firebaseConfig = {
   appId: APP_ID
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = initializeAuth(app)
-export const db = initializeFirestore(app)
+
+// Persistencia de sesión para React Native
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+
+// Configuración de caché en memoria para evitar el error de cacheSizeBytes
+export const db = initializeFirestore(app, {
+  localCache: memoryLocalCache()
+});
