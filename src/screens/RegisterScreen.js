@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput, Alert, Button } from 'react-native';
 import { useAuth } from '../context/AuthContext';
-import { db } from '../FirebaseConfig';
 import { setDoc } from 'firebase/firestore';
 
 export const Register = ({ Navigation }) => {
